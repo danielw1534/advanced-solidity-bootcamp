@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.7.0;
 
-import { UsingERC777 } from "../src/week-1/TokenWithSanctions/AdminSanctionsERC777.sol";
+import { UsingERC777 } from "../src/week-1/AdminSanctionsERC777.sol";
 
 import "forge-std/Script.sol";
 

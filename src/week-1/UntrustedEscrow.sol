@@ -11,8 +11,8 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 // control. Does your contract handle fee-on transfer tokens or non-standard ERC20 tokens.
 
 /// @title UntrustedEscrow
-abstract contract TimelockToken is ERC20, Ownable2Step {
-    constructor(string memory name_, string memory symbol_) ERC20(name_, symbol_) {
+contract TimelockToken is ERC20 {
+    constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol) {
         _mint(msg.sender, 10_000 * 10 ** decimals());
     }
 }
