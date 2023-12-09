@@ -11,13 +11,13 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 // control. Does your contract handle fee-on transfer tokens or non-standard ERC20 tokens.
 
 /// @title UntrustedEscrow
-contract TimelockToken is ERC20 {
+contract C4UntrustedEscrowToken is ERC20 {
     constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol) {
         _mint(msg.sender, 10_000 * 10 ** decimals());
     }
 }
 
-contract UntrustedEscrow {
+contract C4UntrustedEscrow {
     IERC20 public _token;
     uint256 deposit_count;
     mapping(bytes32 => uint256) balances;

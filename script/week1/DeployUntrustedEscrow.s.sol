@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.22;
 
-import { TimelockToken, UntrustedEscrow } from "../src/week-1/UntrustedEscrow.sol";
+import { C4UntrustedEscrowToken, C4UntrustedEscrow } from "../../src/week1/contracts/C4UntrustedEscrow.sol";
 
 import "forge-std/Script.sol";
 
@@ -10,8 +10,8 @@ contract DeployUntrustedEscrow is Script {
     function run() public {
         uint256 key = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(key);
-        TimelockToken tokenTimeLock = new TimelockToken("TokenTimelock", "TT");
-        UntrustedEscrow untrustedEscrow = new UntrustedEscrow(address(tokenTimeLock));
+        C4UntrustedEscrowToken untrustedEscrowToken = new C4UntrustedEscrowToken("UntrustedEscrowToken", "UET");
+        C4UntrustedEscrow untrustedEscrow = new C4UntrustedEscrow(address(untrustedEscrowToken));
 
         vm.stopBroadcast();
     }
