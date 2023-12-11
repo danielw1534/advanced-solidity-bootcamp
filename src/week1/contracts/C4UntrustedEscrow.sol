@@ -7,8 +7,6 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 import "forge-std/console.sol";
 
-import "@openzeppelin/contracts/utils/math/Math.sol";
-
 // Untrusted escrow. Create a contract where a buyer can put an arbitrary ERC20
 // token into a contract and a seller can withdraw it 3 days later. Based on your readings above, what issues do you
 // need to defend against? Create the safest version of this that you can while guarding against issues that you cannot
@@ -16,7 +14,6 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 
 /// @title UntrustedEscrow
 contract C4UntrustedEscrowToken is ERC20 {
-    // IUniswap uniswap;
     // =============================================================
     //                   CONSTRUCTOR/INITIALIZER
     // =============================================================
@@ -122,7 +119,7 @@ contract C4UntrustedEscrow {
         if (amount == 0) revert EscrowAmountCannotBeEqualToZero();
         if (withdrawer == address(0)) revert BuyerCannotBeZeroAddress();
         if (_token.balanceOf(msg.sender) < amount) revert InsufficientBalance();
-        _token.transferFrom(msg.sender, address(this), amount);
+        SafeERC20.safeTransferFrom(_token, msg.sender, address(this), amount);
         uint256 blockTimestamp = block.timestamp;
         emit DepositEscrow(msg.sender, withdrawer, deposit_count, amount, block.timestamp);
         transactionsForAddress[withdrawer][deposit_count] =
