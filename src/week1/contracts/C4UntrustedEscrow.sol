@@ -7,13 +7,16 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 import "forge-std/console.sol";
 
-// Untrusted escrow. Create a contract where a buyer can put an arbitrary ERC20
-// token into a contract and a seller can withdraw it 3 days later. Based on your readings above, what issues do you
-// need to defend against? Create the safest version of this that you can while guarding against issues that you cannot
-// control. Does your contract handle fee-on transfer tokens or non-standard ERC20 tokens.
+/// Untrusted escrow. Create a contract where a depositor can put an arbitrary ERC20
+/// token into a contract and a withdrawer can withdraw it 3 days later. Based on your readings above, what issues do
+/// you
+/// need to defend against? Create the safest version of this that you can while guarding against issues that you cannot
+/// control. Does your contract handle fee-on transfer tokens or non-standard ERC20 tokens.
+/// @author Question: How would this have been more efficient w/ a hash mapping?
 
 /// @title UntrustedEscrow
 contract C4UntrustedEscrowToken is ERC20 {
+    /// @dev Mock ERC20 token.
     // =============================================================
     //                   CONSTRUCTOR/INITIALIZER
     // =============================================================
@@ -62,32 +65,23 @@ contract C4UntrustedEscrow {
     // NOTE: Errors have no parameters for gas purposes.
     // Also, if you hit an error, you already know what function params you passed in.
 
-    /// @dev The transaction hash cannot be empty.
-    error TransactionHashCannotBeEmpty();
+    /// @dev The transaction data cannot be empty.
+    error TransactionDataCannotBeEmpty();
 
-    /// @dev The buyer cannot be the sender.
-    error BuyerNotSender();
+    /// @dev The depositor cannot be the withdrawer.
+    error DepositorCantBeWithdrawer();
 
     /// @dev Escrow amount cannot be equal to 0.
     error EscrowAmountCannotBeEqualToZero();
 
-    /// @dev Unique balances hash conflict, hash is already in use.
-    error UniqueBalancesHashConflict();
-
-    /// @dev Unique timestamps hash conflict, hash is already in use.
-    error UniqueTimestampsHashConflict();
-
     /// @dev Approve ERC20 token deposit failed.
     error ApproveERC20TokenDepositFailed();
-
-    /// @dev Withdrawal from escrow failed.
-    error WithdrawalFromEscrowFailed();
 
     /// @dev 3 day TimeLock has not passed yet.
     error TimeLockNotPassed();
 
-    /// @dev Buyer cannot be zero address.
-    error BuyerCannotBeZeroAddress();
+    /// @dev Withdrawer cannot be zero address.
+    error WithdrawerCannotBeZeroAddress();
 
     /// @dev Insufficient balance.
     error InsufficientBalance();
@@ -117,7 +111,7 @@ contract C4UntrustedEscrow {
 
     function depositEscrow(uint256 amount, address withdrawer) external {
         if (amount == 0) revert EscrowAmountCannotBeEqualToZero();
-        if (withdrawer == address(0)) revert BuyerCannotBeZeroAddress();
+        if (withdrawer == address(0)) revert WithdrawerCannotBeZeroAddress();
         if (_token.balanceOf(msg.sender) < amount) revert InsufficientBalance();
         SafeERC20.safeTransferFrom(_token, msg.sender, address(this), amount);
         uint256 blockTimestamp = block.timestamp;
@@ -133,8 +127,10 @@ contract C4UntrustedEscrow {
             transactionsForAddress[msg.sender][deposit_number].depositor == address(0)
                 || transactionsForAddress[msg.sender][deposit_number].withdrawer == address(0)
                 || transactionsForAddress[msg.sender][deposit_number].timestamp == 0
-        ) revert TransactionHashCannotBeEmpty();
-        if (transactionsForAddress[msg.sender][deposit_number].withdrawer != msg.sender) revert BuyerNotSender();
+        ) revert TransactionDataCannotBeEmpty();
+        if (transactionsForAddress[msg.sender][deposit_number].withdrawer != msg.sender) {
+            revert DepositorCantBeWithdrawer();
+        }
         uint256 currentTime = block.timestamp;
         if (currentTime - transactionsForAddress[msg.sender][deposit_number].timestamp < 3 days) {
             revert TimeLockNotPassed();
