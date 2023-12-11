@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.7.0;
+pragma solidity 0.7.4;
 
 import "@openzeppelin/contracts-07/token/ERC777/ERC777.sol";
 import "@openzeppelin/contracts-07/token/ERC777/IERC777Sender.sol";

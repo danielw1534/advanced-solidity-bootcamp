@@ -6,8 +6,14 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
+/// Token sale and buyback with bonding curve. The more tokens a user buys, the more expensive the token becomes. To
+/// keep things simple, use a linear bonding curve. Consider the case someone might sandwhich attack a bonding curve.
+
 /// @title TokenWithBondingCurve
 contract C3TokenWithBondingCurve is ERC20, Ownable2Step, ReentrancyGuard {
+    uint256 public immutable initialPrice = 0.01 ether;
+    uint256 public immutable curveSlope = 1;
+
     constructor(
         string memory name_,
         string memory symbol_,
@@ -17,18 +23,16 @@ contract C3TokenWithBondingCurve is ERC20, Ownable2Step, ReentrancyGuard {
         ERC20(name_, symbol_)
     { }
 
-    function _mint(address to, uint256 amount) internal virtual override {
-        require(amount <= 1 * 1e18, "TokenSaleBuybackToken: amount exceeds 1");
-        /// @dev question: to.call vs. msg.value()?
-
-        // rounding
-        // slippage
-
-        to.call{ value: totalSupply() * 2 }("");
-        _mint(to, amount);
+    function purchaseTokens() public payable nonReentrant {
+        uint256 amount = msg.value;
+        uint256 tokens = amount * 1e18;
+        _mint(msg.sender, tokens);
     }
 
-    function _burn(address from, uint256 amount) internal virtual override {
-        _burn(from, amount);
+    function sellTokens() public payable {
+        uint256 amount = msg.value;
+        uint256 tokens = amount * 1e18;
+        _burn(msg.sender, tokens);
+        payable(msg.sender).transfer(amount);
     }
 }

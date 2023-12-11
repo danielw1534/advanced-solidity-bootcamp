@@ -7,12 +7,14 @@ import "forge-std/Script.sol";
 
 /// @dev See the Solidity Scripting tutorial: https://book.getfoundry.sh/tutorials/solidity-scripting
 contract DeployUntrustedEscrow is Script {
+    C4UntrustedEscrowToken public untrustedEscrowToken;
+    C4UntrustedEscrow public untrustedEscrow;
+
     function run() public {
         uint256 key = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(key);
-        C4UntrustedEscrowToken untrustedEscrowToken = new C4UntrustedEscrowToken("UntrustedEscrowToken", "UET");
-        C4UntrustedEscrow untrustedEscrow = new C4UntrustedEscrow(address(untrustedEscrowToken));
-
+        untrustedEscrowToken = new C4UntrustedEscrowToken("UntrustedEscrowToken", "UET");
+        untrustedEscrow = new C4UntrustedEscrow(address(untrustedEscrowToken));
         vm.stopBroadcast();
     }
 }
