@@ -16,7 +16,7 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 
 /// @title UntrustedEscrow
 contract C4UntrustedEscrowToken is ERC20 {
-    IUniswap uniswap;
+    // IUniswap uniswap;
     // =============================================================
     //                   CONSTRUCTOR/INITIALIZER
     // =============================================================
