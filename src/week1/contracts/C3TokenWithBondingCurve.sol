@@ -86,7 +86,7 @@ contract C3TokenWithBondingCurve is ERC20, Ownable2Step, ReentrancyGuard {
         return y;
     }
 
-    function calculateOutstandingTokens() public view returns (uint256) {
+    function calculateOutstandingTokens() external view returns (uint256) {
         return totalSupply() - balanceOf(address(this));
     }
 
@@ -129,7 +129,9 @@ contract C3TokenWithBondingCurve is ERC20, Ownable2Step, ReentrancyGuard {
 
     /// @dev Mint tokens to the msg.sender
     /// @param initialSupply The total outstanding tokens at time of purchase.
-    function purchaseTokens(uint256 initialSupply, uint256 depositAmount) public nonReentrant {
+    /// @dev this should be external, since no internal functions are calling it
+    /// @dev public functions 
+    function purchaseTokens(uint256 initialSupply, uint256 depositAmount) external nonReentrant {
         uint256 amount = depositAmount;
         if (amount == 0) revert AmountMustBeGreaterThanZero();
         if (initialSupply != outstandingTokens) revert InitialSupplyHasChanged();
@@ -146,12 +148,15 @@ contract C3TokenWithBondingCurve is ERC20, Ownable2Step, ReentrancyGuard {
         _mint(from, amount);
     }
 
-    function sellTokens(uint256 tokenAmount) public {
+    function sellTokens(uint256 tokenAmount) external {
         uint256 amount = tokenAmount;
         if (amount == 0) revert AmountMustBeGreaterThanZero();
         if (amount > balanceOf(msg.sender)) revert InsufficientBalance();
         uint256 amountToReturn = calculateAmountRedeemable(amount);
         _burn(msg.sender, tokenAmount);
+        /// @dev This doesn't do what I thought it did
+        /// @dev This just says make sure the wethToken address has the transferFrom function
+        /// @dev would be better to to a safeTransferFrom here
         IERC1363(wethToken).transferFrom(address(this), msg.sender, amountToReturn);
     }
 
