@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.7.0;
+pragma solidity 0.7.4;
 
 import "@openzeppelin/contracts-07/token/ERC777/ERC777.sol";
 import "@openzeppelin/contracts-07/token/ERC777/IERC777Sender.sol";
@@ -8,14 +8,14 @@ import "@openzeppelin/contracts-07/introspection/ERC1820Implementer.sol";
 import "@openzeppelin/contracts-07/introspection/IERC1820Registry.sol";
 
 /// @title ERC777 with sanctions
-contract MyERC777 is ERC777 {
+contract C1TokenWithSanctions is ERC777 {
     constructor(uint256 initialSupply) ERC777("Gold", "GLD", new address[](0)) {
         _mint(msg.sender, initialSupply, "", "");
     }
 }
 
 /// @title ERC777 with sanctions
-contract UsingERC777 is IERC777Recipient, IERC777Sender, ERC1820Implementer {
+contract UsingC1TokenWithSanctions is IERC777Recipient, IERC777Sender, ERC1820Implementer {
     ERC777 public token;
     IERC1820Registry public registry = IERC1820Registry(0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24);
     address public admin;
@@ -38,7 +38,7 @@ contract UsingERC777 is IERC777Recipient, IERC777Sender, ERC1820Implementer {
     mapping(address => uint256) private _balances;
 
     constructor() {
-        token = new MyERC777(100 ether);
+        token = new C1TokenWithSanctions(100 ether);
         token.transfer(msg.sender, 100 ether);
         admin = msg.sender;
 

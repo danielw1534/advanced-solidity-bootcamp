@@ -4,9 +4,18 @@ pragma solidity >=0.8.22;
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-/// @title GodModeERC20Token
-contract GodModeERC20Token is ERC20, Ownable2Step {
-    constructor(string memory name_, string memory symbol_) ERC20(name_, symbol_) {
+/// A special address is able to transfer tokens between addresses at will.
+
+/// @title GodModeToken
+contract C2GodModeToken is ERC20, Ownable2Step {
+    constructor(
+        string memory name_,
+        string memory symbol_,
+        address initialOwner_
+    )
+        Ownable(initialOwner_)
+        ERC20(name_, symbol_)
+    {
         _mint(msg.sender, 100_000_000 * 1e18);
     }
 
