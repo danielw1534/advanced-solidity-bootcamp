@@ -5,7 +5,6 @@ import { Test, console2 } from "forge-std/Test.sol";
 import { C1TokenWithSanctions } from "../../src/week1/contracts/C1TokenWithSanctions.sol";
 
 contract C1TokenWithSanctionsTest is Test {
-
     C1TokenWithSanctions public tokenWithSanctions;
 
     function setUp() private {
@@ -13,13 +12,14 @@ contract C1TokenWithSanctionsTest is Test {
         // tokenWithSanctions.setNumber(0);
     }
 
-    // function test_Increment() public {
-    //     counter.increment();
-    //     assertEq(counter.number(), 1);
-    // }
+    // =============================================================
+    //                         TEST CASES
+    // =============================================================
+    /// @dev Test that admin can ban address from receiving token;
 
-    function testFuzz_SetNumber(uint256 x) private {
-        //     counter.setNumber(x);
-        //     assertEq(counter.number(), x);
-    }
+    /// @dev Test that admin can ban address from sending token;
+
+    /// @dev Test that non-admin cannot ban address from receiving token;
+
+    /// @dev Test that non-banned address can receive & send token;
 }

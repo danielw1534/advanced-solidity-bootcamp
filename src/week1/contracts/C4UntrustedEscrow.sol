@@ -27,7 +27,6 @@ contract C4UntrustedEscrowToken is ERC20 {
 }
 
 contract C4UntrustedEscrow {
-    // using Math for uint256;
     // =============================================================
     //                        STRUCTURES
     // =============================================================
@@ -46,6 +45,9 @@ contract C4UntrustedEscrow {
     IERC20 public _token;
     uint256 deposit_count;
     mapping(address => mapping(uint256 => Transaction)) public transactionsForAddress;
+
+    mapping(bytes32 => Transaction) public transactionsForHash;
+
     // =============================================================
     //                          EVENTS
     // =============================================================
