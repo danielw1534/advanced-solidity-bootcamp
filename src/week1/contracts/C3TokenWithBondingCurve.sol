@@ -60,7 +60,7 @@ contract C3TokenWithBondingCurve is ERC20, Ownable2Step, ReentrancyGuard {
         uint256 smallerTotalSupply
     )
         public
-        view
+        pure
         returns (uint256)
     {
         uint256 largerTotalPricePerToken = calculatePrice(largerTotalSupply);
@@ -130,7 +130,7 @@ contract C3TokenWithBondingCurve is ERC20, Ownable2Step, ReentrancyGuard {
     /// @dev Mint tokens to the msg.sender
     /// @param initialSupply The total outstanding tokens at time of purchase.
     /// @dev this should be external, since no internal functions are calling it
-    /// @dev public functions 
+    /// @dev public functions
     function purchaseTokens(uint256 initialSupply, uint256 depositAmount) external nonReentrant {
         uint256 amount = depositAmount;
         if (amount == 0) revert AmountMustBeGreaterThanZero();

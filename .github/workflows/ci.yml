@@ -87,6 +87,8 @@ jobs:
 
       - name: "Run the tests"
         run: "forge test"
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
 
       - name: "Add test summary"
         run: |
