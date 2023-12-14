@@ -60,7 +60,7 @@ contract C3TokenWithBondingCurve is ERC20, Ownable2Step, ReentrancyGuard {
         uint256 smallerTotalSupply
     )
         public
-        view
+        pure
         returns (uint256)
     {
         uint256 largerTotalPricePerToken = calculatePrice(largerTotalSupply);
