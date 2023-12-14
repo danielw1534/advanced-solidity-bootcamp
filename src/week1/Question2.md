@@ -5,11 +5,19 @@
 There are a few reasons why it exists:
 
 1. Unspecified ERC-20 return types
-  - Since the ERC-20 token standard did not explicitly specify the return type for `transfer`, `transferFrom`, and `approve` (should return a boolean, but non-compliant/older ones don't follow this)
+
+- Since the ERC-20 token standard did not explicitly specify the return type for `transfer`, `transferFrom`, and
+  `approve` (should return a boolean, but non-compliant/older ones don't follow this)
+
 2. Mitigating reentrancy attacks
- - since re-entrancy is possible with the basse/original erc-20 token standard, `safeERC20` implements a lot of best practices to ensure re-entrancy does not occur.
+
+- since re-entrancy is possible with the basse/original erc-20 token standard, `safeERC20` implements a lot of best
+  practices to ensure re-entrancy does not occur.
+
 3. Development simplicity/security
- - since it's a standardized/tested library, it allows developers to build faster without worrying about the pitfalls of the original ERC-20 token standard
+
+- since it's a standardized/tested library, it allows developers to build faster without worrying about the pitfalls of
+  the original ERC-20 token standard
 
 ## When should it be used?
 
