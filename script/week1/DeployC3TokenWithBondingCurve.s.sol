@@ -17,7 +17,7 @@ contract DeployC3TokenWithBondingCurve is Script {
         vm.startBroadcast(key);
         erc1363Token = new WETHERC1363();
         tokenWithBondingCurve =
-            new C3TokenWithBondingCurve("TokenWithBondingCurve", "TBC", msg.sender, 1000 ether, address(erc1363Token) );
+            new C3TokenWithBondingCurve("TokenWithBondingCurve", "TBC", msg.sender, 1000 ether, address(erc1363Token));
         vm.stopBroadcast();
     }
 }
