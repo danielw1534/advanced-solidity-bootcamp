@@ -10,6 +10,5 @@
     "no-console": "off",
     "not-rely-on-time": "off",
     "one-contract-per-file": "off"
-
   }
 }
