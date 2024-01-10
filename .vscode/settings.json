@@ -7,5 +7,9 @@
   },
   "npm.exclude": "**/lib/**",
   "solidity.formatter": "forge",
-  "solidity.compileUsingRemoteVersion": "v0.8.22+commit.4fc1097e"
+  "solidity.compileUsingRemoteVersion": "v0.8.22+commit.4fc1097e",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.configPath": ".prettierrc.yml",
+  "prettier.prettierPath": ""
 }
