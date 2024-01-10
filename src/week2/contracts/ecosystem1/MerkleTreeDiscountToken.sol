@@ -19,6 +19,8 @@ contract MerkleTreeDiscountToken is Ownable, ERC721Royalty {
     uint256 public constant MAX_SUPPLY = 1000; // Maximum supply of NFTs
     uint256 public totalSupply; // Current supply of NFTs
     address public immutable token;
+    /// @dev This merkle root was generated through the following
+    /// website:https://codesandbox.io/p/sandbox/merkle-root-and-proof-generator-fbm9be
     bytes32 public immutable merkleRoot = 0x922c30c4db7884b9f10737925f272cb43ad59bd414e961338e4e77217463e56b;
     uint256 public mintPrice = 0.01 ether;
     uint256 public discountPrice = 0.005 ether;
@@ -28,7 +30,9 @@ contract MerkleTreeDiscountToken is Ownable, ERC721Royalty {
     /*///////////////////////////////////////////////////////////////
                             ERROR MESSAGES
     //////////////////////////////////////////////////////////////*/
+
     error MaxSupplyReached();
+
     /*///////////////////////////////////////////////////////////////
                         CONSTRUCTOR/INITIALIZER
     //////////////////////////////////////////////////////////////*/
@@ -50,7 +54,7 @@ contract MerkleTreeDiscountToken is Ownable, ERC721Royalty {
     }
 
     function discountListMint(bytes32[] calldata _merkleProof, uint256 tokenId) external payable {
-        require(tokenId < arr.length*256, "Invalid token ID");
+        require(tokenId < arr.length * 256, "Invalid token ID");
         uint256 storageOffset = tokenId / 256;
         uint256 offsetWithin256 = tokenId % 256;
         uint256 storedBit = (arr[storageOffset] >> offsetWithin256) & uint256(1);
